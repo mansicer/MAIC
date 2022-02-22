@@ -1,0 +1,41 @@
+# --- QMIX specific parameters ---
+
+save_model: False # Save the models to disk
+save_model_interval: 1000000 # Save models after this many timesteps
+
+# use epsilon greedy action selector
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+
+runner: "episode"
+batch_size_run: 1 # Number of environments to run in parallel
+
+buffer_size: 5000
+
+# update the target network every {} episodes
+target_update_interval: 200
+
+# use the Q_Learner to train
+agent_output_type: "q"
+learner: "maic_learner"
+double_q: True
+mixer: "qmix"
+mixing_embed_dim: 32
+hypernet_layers: 2
+hypernet_embed: 64
+
+mac: "maic_mac"
+agent: "maic"
+
+latent_dim: 8
+attention_dim: 32
+nn_hidden_size: 64
+mi_loss_weight: 0.001
+entropy_loss_weight: 0.01
+msg_l1_reg_loss_weight: 0
+var_floor: 0.002
+log_weights: True
+
+name: "maic"

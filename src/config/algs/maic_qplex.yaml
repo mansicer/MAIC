@@ -1,0 +1,56 @@
+# --- QMIX specific parameters ---
+
+save_model: False # Save the models to disk
+save_model_interval: 1000000 # Save models after this many timesteps
+
+# use epsilon greedy action selector
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+
+runner: "episode"
+batch_size_run: 1 # Number of environments to run in parallel
+
+buffer_size: 5000
+
+# update the target network every {} episodes
+target_update_interval: 200
+
+# use the Q_Learner to train
+agent_output_type: "q"
+learner: "maic_qplex_learner"
+double_q: True
+mixer: "dmaq_qatten"
+mixing_embed_dim: 32
+hypernet_embed: 64
+adv_hypernet_layers: 1
+adv_hypernet_embed: 64
+
+mac: "maic_mac"
+agent: "maic"
+
+# qplex settings
+num_kernel: 4
+is_minus_one: True
+is_adv_attention: True
+is_stop_gradient: True
+weighted_head: True  # weighted head Q-values, for MMM2 and 3s5z_vs_3s6z, it is True
+
+# dmaq_qattn settings
+n_head: 4  # attention head number
+attend_reg_coef: 0.001  # attention regulation coefficient  # For MMM2 and 3s5z_vs_3s6z, it is 0.001
+state_bias: True  # the constant value c(s) in the paper
+mask_dead: False
+nonlinear: True  # non-linearity, for MMM2, it is True
+
+latent_dim: 8
+attention_dim: 32
+nn_hidden_size: 64
+mi_loss_weight: 0.001
+entropy_loss_weight: 0.01
+msg_l1_reg_loss_weight: 0.0001
+var_floor: 0.002
+log_weights: True
+
+name: "maic_qplex"
