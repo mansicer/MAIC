@@ -39,7 +39,7 @@ pip install -r requirements.txt
 pip install qplex_smac/
 ```
 
-As MAIC contains implementation with QPLEX mixing network, please install the QPLEX version of SMAC in `qplex_smac` folder. You can also run algorithms without QPLEX mixing network integration with default SMAC installed (https://github.com/oxwhirl/smac). 
+As MAIC contains implementation with QPLEX mixing network (https://github.com/wjh720/QPLEX), please install the QPLEX version of SMAC in `qplex_smac` folder. You can also run algorithms without QPLEX mixing network integration with default SMAC installed (https://github.com/oxwhirl/smac). 
 
 
 ## Run an experiment 
