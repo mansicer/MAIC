@@ -57,7 +57,7 @@ class MAICLearner:
             agent_outs, returns_ = self.mac.forward(batch, t=t, 
                 prepare_for_logging=prepare_for_logging,
                 train_mode=True,
-                mixer=self.target_mixer if self.supervised_loss_with_mixer else None,
+                mixer=self.target_mixer,
             )
             mac_out.append(agent_outs)
             if prepare_for_logging and 'logs' in returns_:
