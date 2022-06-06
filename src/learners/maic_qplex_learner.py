@@ -39,9 +39,6 @@ class MAICQPLEXLearner:
         
         self.n_actions = self.args.n_actions
 
-        self.supervised_loss = True if hasattr(args, 'supervised_loss_weight') and args.supervised_loss_weight > 0 else False
-        self.supervised_loss_with_mixer = True if self.supervised_loss and hasattr(args, 'supervised_loss_with_mixer') and args.supervised_loss_with_mixer else False
-
     def sub_train(self, batch: EpisodeBatch, t_env: int, episode_num: int, mac, mixer, optimiser, params,
                   show_demo=False, save_data=None):
         # Get the relevant quantities
@@ -66,7 +63,7 @@ class MAICQPLEXLearner:
             agent_outs, returns_ = self.mac.forward(batch, t=t, 
                 prepare_for_logging=prepare_for_logging,
                 train_mode=True,
-                mixer=self.target_mixer if self.supervised_loss_with_mixer else None,
+                mixer=self.target_mixer
             )
             mac_out.append(agent_outs)
             if prepare_for_logging and 'logs' in returns_:
