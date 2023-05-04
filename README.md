@@ -1,5 +1,7 @@
 # MAIC: Multi-Agent Incentive Communication with Decentralized Teammate Modeling
 
+[[PDF](https://ojs.aaai.org/index.php/AAAI/article/view/21179)] [[Appendix](http://www.lamda.nju.edu.cn/zhangfx/assets/maic/MAIC-Supplementary%20Material.pdf)]
+
 This is the implementation of the paper "Multi-Agent Incentive Communication via Decentralized Teammate Modeling". This repo is currently maintained by the [LAMDA-RL](https://github.com/LAMDA-RL) group.
 
 Note: the experiments of MAIC is conducted in SC2.4.6.2.69232, which is same as the SMAC run data release (https://github.com/oxwhirl/smac/releases/tag/v1). The results are not always comparable with results run in SC2.4.10.
