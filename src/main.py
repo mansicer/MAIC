@@ -56,7 +56,7 @@ def _get_config(params, arg_name, subfolder):
     if config_name is not None:
         with open(os.path.join(os.path.dirname(__file__), "config", subfolder, "{}.yaml".format(config_name)), "r") as f:
             try:
-                config_dict = yaml.load(f)
+                config_dict = yaml.load(f, Loader=yaml.CLoader)
             except yaml.YAMLError as exc:
                 assert False, "{}.yaml error: {}".format(config_name, exc)
         return config_dict
@@ -64,7 +64,7 @@ def _get_config(params, arg_name, subfolder):
 
 def recursive_dict_update(d, u):
     for k, v in u.items():
-        if isinstance(v, collections.Mapping):
+        if isinstance(v, collections.abc.Mapping):
             d[k] = recursive_dict_update(d.get(k, {}), v)
         else:
             d[k] = v
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     # Get the defaults from default.yaml
     with open(os.path.join(os.path.dirname(__file__), "config", "default.yaml"), "r") as f:
         try:
-            config_dict = yaml.load(f)
+            config_dict = yaml.load(f, Loader=yaml.CLoader)
         except yaml.YAMLError as exc:
             assert False, "default.yaml error: {}".format(exc)
 
