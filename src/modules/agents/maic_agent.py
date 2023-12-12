@@ -41,8 +41,8 @@ class MAICAgent(nn.Module):
             nn.Linear(NN_HIDDEN_SIZE, args.n_actions)
         )
 
-        self.w_key = nn.Linear(args.rnn_hidden_dim, args.attention_dim)
-        self.w_query = nn.Linear(args.latent_dim, args.attention_dim)
+        self.w_query = nn.Linear(args.rnn_hidden_dim, args.attention_dim)
+        self.w_key = nn.Linear(args.latent_dim, args.attention_dim)
         
     def init_hidden(self):
         return self.fc1.weight.new(1, self.args.rnn_hidden_dim).zero_()
@@ -71,9 +71,9 @@ class MAICAgent(nn.Module):
         h_repeat = h.view(bs, self.n_agents, -1).repeat(1, self.n_agents, 1).view(bs * self.n_agents * self.n_agents, -1)
         msg = self.msg_net(th.cat([h_repeat, latent], dim=-1)).view(bs, self.n_agents, self.n_agents, self.n_actions)
         
-        key = self.w_key(h).unsqueeze(1)
-        query = self.w_query(latent).reshape(bs * self.n_agents, self.n_agents, -1).transpose(1, 2)
-        alpha = th.bmm(key / (self.args.attention_dim ** (1/2)), query).view(bs, self.n_agents, self.n_agents)
+        query = self.w_query(h).unsqueeze(1)
+        key = self.w_key(latent).reshape(bs * self.n_agents, self.n_agents, -1).transpose(1, 2)
+        alpha = th.bmm(query / (self.args.attention_dim ** (1/2)), key).view(bs, self.n_agents, self.n_agents)
         for i in range(self.n_agents):
             alpha[:, i, i] = -1e9
         alpha = F.softmax(alpha, dim=-1).reshape(bs, self.n_agents, self.n_agents, 1)
@@ -90,9 +90,9 @@ class MAICAgent(nn.Module):
             if hasattr(self.args, 'mi_loss_weight') and self.args.mi_loss_weight > 0:
                 returns['mi_loss'] = self.calculate_action_mi_loss(h, bs, latent_embed, return_q)
             if hasattr(self.args, 'entropy_loss_weight') and self.args.entropy_loss_weight > 0:
-                key = self.w_key(h.detach()).unsqueeze(1)
-                query = self.w_query(latent.detach()).reshape(bs * self.n_agents, self.n_agents, -1).transpose(1, 2)
-                alpha = F.softmax(th.bmm(key, query), dim=-1).reshape(bs, self.n_agents, self.n_agents)
+                query = self.w_query(h.detach()).unsqueeze(1)
+                key = self.w_key(latent.detach()).reshape(bs * self.n_agents, self.n_agents, -1).transpose(1, 2)
+                alpha = F.softmax(th.bmm(query, key), dim=-1).reshape(bs, self.n_agents, self.n_agents)
                 returns['entropy_loss'] = self.calculate_entropy_loss(alpha)
 
         return return_q, h, returns
